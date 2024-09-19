@@ -26,7 +26,9 @@ function convertSeconds(seconds) {
 
 async function getsongs(folder){
     currfolder = folder;
-    let a = await fetch(`https://maroju-ramesh.github.io/Spotify/${folder}/`)
+    const fetchUrl = `https://maroju-ramesh.github.io/Spotify/${folder}/`; // Constructed URL
+    console.log(`Fetching songs from: ${fetchUrl}`); // Debug log
+    let a = await fetch(fetchUrl);
 let response = await a.text();
 //console.log(response);
 let div = document.createElement("div")
@@ -35,8 +37,9 @@ let as = div.getElementsByTagName("a")
 songs =[]
 for (let index = 0; index < as.length; index++) {
     const element = as[index];
-    if(element.href.endsWith(".mp3")){
-        songs.push(element.href.split(`/${folder}/`)[1]);
+    const songName = element.href.split(`/${folder}/`)[1];
+        console.log(`Found song: ${songName}`); // Debug log
+        songs.push(songName);
     
     }
 }
@@ -65,7 +68,7 @@ for(const song of songs){
 //attach an event listener to each song
 Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e=>{
     e.addEventListener("click", element=>{
-
+    console.log(`Playing track: ${track}`);
     playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim())
     updatePlayButton(e);
     });
