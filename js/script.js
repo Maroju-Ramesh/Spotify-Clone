@@ -37,7 +37,8 @@ let as = div.getElementsByTagName("a")
 songs =[]
 for (let index = 0; index < as.length; index++) {
     const element = as[index];
-    const songName = element.href.split(`/${folder}/`)[1];
+    if (element.href.endsWith(".mp3")) {
+        const songName = element.href.split(`/${folder}/`)[1];
         console.log(`Found song: ${songName}`); // Debug log
         songs.push(songName);
     
@@ -75,18 +76,7 @@ Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEa
 });
 return songs;
 
-}
-
-
-
-
-
-
-
-
-////////////////////////
-
-
+};
 
 
 
