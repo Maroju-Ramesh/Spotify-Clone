@@ -159,7 +159,7 @@ for (let index = 0; index < array.length; index++) {
     if(e.href.includes("/songs/")){
         let folder = e.href.split("/").slice(-1)[0]
         // Get the metadata of the folder
-        let a = await fetch(`/songs/${folder}/info.json`);
+        let a = await fetch(`Spotify_project/songs/${folder}/info.json`);
         let response = await a.json();
         // console.log(response)
         cardContainer.innerHTML =cardContainer.innerHTML + ` <div data-folder="${folder}" class="card">
@@ -182,7 +182,7 @@ for (let index = 0; index < array.length; index++) {
 
 Array.from(document.getElementsByClassName("card")).forEach(e=>{
     e.addEventListener("click", async item=>{
-        songs = await getsongs(`songs/${item.currentTarget.dataset.folder}`)
+        songs = await getsongs(`Spotify_project/songs/${item.currentTarget.dataset.folder}`)
         playMusic(songs[0]);
     })
 })
@@ -192,7 +192,7 @@ Array.from(document.getElementsByClassName("card")).forEach(e=>{
 
 async function main(){
 
-    await getsongs("/songs/cs")
+    await getsongs("songs/cs")
 
     playMusic(songs[0], true)
 
