@@ -24,9 +24,11 @@ function convertSeconds(seconds) {
 }
 
 
-async function getsongs(folder){
+const songBaseUrl = 'https://raw.githubusercontent.com/Maroju-Ramesh/Spotify-Clone/main/songs/';
+
+async function getsongs(folder) {
     currfolder = folder;
-    const fetchUrl = `https://maroju-ramesh.github.io/Spotify-Clone/${folder}/`; // Constructed URL
+    const fetchUrl = songBaseUrl + folder + '/'; // Adjusted URL // Constructed URL
     console.log(`Fetching songs from: ${fetchUrl}`); // Debug log
     let a = await fetch(fetchUrl);
 let response = await a.text();
