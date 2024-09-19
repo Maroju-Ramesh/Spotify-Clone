@@ -26,7 +26,7 @@ function convertSeconds(seconds) {
 
 async function getsongs(folder){
     currfolder = folder;
-    let a = await fetch(`Songs/${folder}/`)
+    let a = await fetch(`/Spotify_project/${folder}/`)
 let response = await a.text();
 //console.log(response);
 let div = document.createElement("div")
@@ -58,7 +58,7 @@ for(const song of songs){
                             </span>
                             <img  src="img/play.svg" alt="">
                         </div>
-                    </li>`
+                    </li>`;
 }
 
 
@@ -76,9 +76,25 @@ return songs;
 
 
 
+
+
+
+
+
+////////////////////////
+
+
+
+
+
+
 const playMusic = (track, pause = false) => {
-    
-    currentSong.src = `/${currfolder}/` + track;
+    if (!songs.includes(track)) {
+        console.error(`Track not found: ${track}`);
+        return;
+    }
+
+    currentSong.src = `/Spotify_project/${currfolder}/` + track;
 
     if (!pause) {
         currentSong.play();
@@ -145,7 +161,7 @@ Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEa
 
 /////////////////////////
 async function displayAlbums(){
-    let a = await fetch(`songs/`)
+    let a = await fetch(`/Spotify_project/songs/`)
 let response = await a.text();
 // console.log(response);
 let div = document.createElement("div")
@@ -159,7 +175,7 @@ for (let index = 0; index < array.length; index++) {
     if(e.href.includes("/songs/")){
         let folder = e.href.split("/").slice(-1)[0]
         // Get the metadata of the folder
-        let a = await fetch(`Spotify_project/songs/${folder}/info.json`);
+        let a = await fetch(`/Spotify_project/songs/${folder}/info.json`);
         let response = await a.json();
         // console.log(response)
         cardContainer.innerHTML =cardContainer.innerHTML + ` <div data-folder="${folder}" class="card">
@@ -171,7 +187,7 @@ for (let index = 0; index < array.length; index++) {
                                     stroke-width="1.5" />
                             </svg>
                         </div>
-                        <img src="/songs/${folder}/cover.jpg" alt="">
+                        <img src="/Spotify_project/songs/${folder}/cover.jpg" alt="">
                         <h2>${response.title}</h2>
                         <p>${response.description}</p>
                     </div>`
@@ -182,7 +198,7 @@ for (let index = 0; index < array.length; index++) {
 
 Array.from(document.getElementsByClassName("card")).forEach(e=>{
     e.addEventListener("click", async item=>{
-        songs = await getsongs(`Spotify_project/songs/${item.currentTarget.dataset.folder}`)
+        songs = await getsongs(`songs/${item.currentTarget.dataset.folder}`)
         playMusic(songs[0]);
     })
 })
@@ -191,8 +207,8 @@ Array.from(document.getElementsByClassName("card")).forEach(e=>{
 }
 
 async function main(){
- await getsongs("cs")
-   
+
+    await getsongs("songs/cs")
 
     playMusic(songs[0], true)
 
