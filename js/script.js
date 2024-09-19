@@ -192,7 +192,7 @@ Array.from(document.getElementsByClassName("card")).forEach(e=>{
 
 async function main(){
 
-    await getsongs("songs/cs")
+    await getsongs("/songs/cs")
 
     playMusic(songs[0], true)
 
