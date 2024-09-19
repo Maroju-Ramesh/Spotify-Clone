@@ -191,8 +191,8 @@ Array.from(document.getElementsByClassName("card")).forEach(e=>{
 }
 
 async function main(){
-
-    await getsongs("songs/cs")
+ await getsongs("https://maroju-ramesh.github.io/Spotify_project/songs/cs")
+   
 
     playMusic(songs[0], true)
 
