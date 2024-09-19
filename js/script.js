@@ -58,7 +58,7 @@ for(const song of songs){
                             </span>
                             <img  src="img/play.svg" alt="">
                         </div>
-                    </li>`;
+                    </li>`
 }
 
 
@@ -191,7 +191,7 @@ Array.from(document.getElementsByClassName("card")).forEach(e=>{
 }
 
 async function main(){
- await getsongs("songs/cs")
+ await getsongs("cs")
    
 
     playMusic(songs[0], true)
