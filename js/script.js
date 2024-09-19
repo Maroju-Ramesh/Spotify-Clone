@@ -26,7 +26,7 @@ function convertSeconds(seconds) {
 
 async function getsongs(folder){
     currfolder = folder;
-    let a = await fetch(`git/${folder}/`)
+    let a = await fetch(`/${folder}/`)
 let response = await a.text();
 //console.log(response);
 let div = document.createElement("div")
@@ -145,7 +145,7 @@ Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEa
 
 /////////////////////////
 async function displayAlbums(){
-    let a = await fetch(`git/songs/`)
+    let a = await fetch(`/songs/`)
 let response = await a.text();
 // console.log(response);
 let div = document.createElement("div")
@@ -159,7 +159,7 @@ for (let index = 0; index < array.length; index++) {
     if(e.href.includes("/songs/")){
         let folder = e.href.split("/").slice(-1)[0]
         // Get the metadata of the folder
-        let a = await fetch(`git/songs/${folder}/info.json`);
+        let a = await fetch(`/songs/${folder}/info.json`);
         let response = await a.json();
         // console.log(response)
         cardContainer.innerHTML =cardContainer.innerHTML + ` <div data-folder="${folder}" class="card">
