@@ -24,7 +24,7 @@ function convertSeconds(seconds) {
 }
 
 
-async function getsongs(folder){
+async function getSongs(folder){
     currfolder = folder;
     const fetchUrl = `/${folder}/`; // Constructed URL
     console.log(`Fetching songs from: ${fetchUrl}`); // Debug log
@@ -192,7 +192,7 @@ for (let index = 0; index < array.length; index++) {
 
 Array.from(document.getElementsByClassName("card")).forEach(e=>{
     e.addEventListener("click", async item=>{
-        songs = await getsongs(`songs/${item.currentTarget.dataset.folder}`)
+        songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`)
         playMusic(songs[0]);
     })
 })
@@ -202,13 +202,13 @@ Array.from(document.getElementsByClassName("card")).forEach(e=>{
 
 async function main(){
 
-    await getsongs("songs/cs")
+    await getSongs("songs/cs");
 
-    playMusic(songs[0], true)
+    playMusic(songs[0], true);
 
 //display all albums n the page
 
-displayAlbums()
+displayAlbums(;)
 
 
 
