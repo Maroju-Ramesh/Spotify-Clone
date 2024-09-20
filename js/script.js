@@ -15,7 +15,7 @@ function convertSeconds(seconds) {
 
 async function getsongs(folder) {
     currfolder = folder;
-    const fetchUrl = `https://maroju-ramesh.github.io/Spotify-Clone/songs/${folder}/songs.json`;
+    const fetchUrl = `/${folder}/`;
     console.log(`Fetching songs from: ${fetchUrl}`);
     let response = await fetch(fetchUrl);
 
@@ -60,7 +60,7 @@ const playMusic = (track, pause = false) => {
         console.error(`Track not found: ${track}`);
         return;
     }
-    currentSong.src = `https://maroju-ramesh.github.io/Spotify-Clone/songs/${currfolder}/${track}`;
+    currentSong.src = `/${currfolder}/${track}`;
     if (!pause) {
         currentSong.play();
         play.src = "img/pause.svg";
@@ -102,7 +102,7 @@ const updatePlayButtonForCurrentSong = (track) => {
 async function displayAlbums() {
     try {
         // Fetch the songs directory to list all albums
-        const response = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs.json`);
+        const response = await fetch(`/songs/`);
         const text = await response.text();
 
         // Create a temporary DOM element to parse the HTML response
@@ -120,7 +120,7 @@ async function displayAlbums() {
             if (anchor.href.includes("/songs/")) {
                 // Attempt to fetch the info.json for the folder
                 try {
-                    const infoResponse = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs/${folderName}/info.json`);
+                    const infoResponse = await fetch(`/songs/${folderName}/info.json`);
                     const info = await infoResponse.json();
                     
                     // Add the album info to the card container
@@ -131,7 +131,7 @@ async function displayAlbums() {
                                     <path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke-width="1.5" />
                                 </svg>
                             </div>
-                            <img src="https://maroju-ramesh.github.io/Spotify-Clone/songs/${folderName}/cover.jpg" alt="">
+                            <img src="/songs/${folderName}/cover.jpg" alt="">
                             <h2>${info.title}</h2>
                             <p>${info.description}</p>
                         </div>`;
@@ -153,6 +153,8 @@ async function displayAlbums() {
 }
 
 async function main() {
+    await getSongs("songs/ncs")
+    playMusic(songs[0], true)
     await displayAlbums();
 
     play.addEventListener("click", () => {
