@@ -18,6 +18,13 @@ async function getsongs(folder) {
     const fetchUrl = `https://maroju-ramesh.github.io/Spotify-Clone/songs/${folder}/songs.json`;
     console.log(`Fetching songs from: ${fetchUrl}`);
     let response = await fetch(fetchUrl);
+
+     // Check for a successful response
+    if (!response.ok) {
+        console.error(`Failed to fetch songs: ${response.statusText}`);
+        return [];
+    }
+
     let data = await response.json();
     
     songs = data.songs; // Assuming songs is an array in songs.json
@@ -93,14 +100,27 @@ const updatePlayButtonForCurrentSong = (track) => {
 };
 
 async function displayAlbums() {
-    let response = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs.json`); // Adjusted to fetch manifest
-    let data = await response.json(); // Assuming a similar structure
+    const fetchUrl = `https://maroju-ramesh.github.io/Spotify-Clone/songs/`;
+    console.log(`Fetching albums from: ${fetchUrl}`);
+    
+    let response = await fetch(fetchUrl);
+    if (!response.ok) {
+        console.error(`Failed to fetch albums: ${response.statusText}`);
+        return;
+    }
 
+    let textResponse = await response.text();
+    let div = document.createElement("div");
+    div.innerHTML = textResponse;
+    let anchors = div.getElementsByTagName("a");
     let cardContainer = document.querySelector(".cardContainer");
 
-    for (const folder of data.folders) { // Assuming folders is an array in songs.json
-        const folderResponse = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs/${folder}/info.json`);
-        const folderData = await folderResponse.json();
+    for (let index = 0; index < anchors.length; index++) {
+        const e = anchors[index];
+        if (e.href.includes("/songs/")) {
+            let folder = e.href.split("/").slice(-1)[0];
+            let infoResponse = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs/${folder}/info.json`);
+            let infoData = await infoResponse.json();
         
         cardContainer.innerHTML += `
             <div data-folder="${folder}" class="card">
@@ -114,6 +134,7 @@ async function displayAlbums() {
                 <p>${folderData.description}</p>
             </div>`;
     }
+}
 
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
