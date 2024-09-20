@@ -100,41 +100,49 @@ const updatePlayButtonForCurrentSong = (track) => {
 };
 
 async function displayAlbums() {
-    const fetchUrl = `https://maroju-ramesh.github.io/Spotify-Clone/songs/`;
-    console.log(`Fetching albums from: ${fetchUrl}`);
-    
-    let response = await fetch(fetchUrl);
-    if (!response.ok) {
-        console.error(`Failed to fetch albums: ${response.statusText}`);
-        return;
-    }
+    try {
+        // Fetch the songs directory to list all albums
+        const response = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs/`);
+        const text = await response.text();
 
-    let textResponse = await response.text();
-    let div = document.createElement("div");
-    div.innerHTML = textResponse;
-    let anchors = div.getElementsByTagName("a");
-    let cardContainer = document.querySelector(".cardContainer");
+        // Create a temporary DOM element to parse the HTML response
+        const div = document.createElement("div");
+        div.innerHTML = text;
 
-    for (let index = 0; index < anchors.length; index++) {
-        const e = anchors[index];
-        if (e.href.includes("/songs/")) {
-            let folder = e.href.split("/").slice(-1)[0];
-            let infoResponse = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs/${folder}/info.json`);
-            let infoData = await infoResponse.json();
-        
-        cardContainer.innerHTML += `
-            <div data-folder="${folder}" class="card">
-                <div class="play-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke-width="1.5" />
-                    </svg>
-                </div>
-                <img src="https://maroju-ramesh.github.io/Spotify-Clone/songs/${folder}/cover.jpg" alt="">
-                <h2>${folderData.title}</h2>
-                <p>${folderData.description}</p>
-            </div>`;
+        // Get all anchor tags within the directory
+        const anchors = div.getElementsByTagName("a");
+        const cardContainer = document.querySelector(".cardContainer");
+
+        // Loop through the anchors to find album folders
+        Array.from(anchors).forEach(async (anchor) => {
+            const folderName = anchor.href.split("/").pop();
+
+            if (anchor.href.includes("/songs/")) {
+                // Attempt to fetch the info.json for the folder
+                try {
+                    const infoResponse = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs/${folderName}/info.json`);
+                    const info = await infoResponse.json();
+                    
+                    // Add the album info to the card container
+                    cardContainer.innerHTML += `
+                        <div data-folder="${folderName}" class="card">
+                            <div class="play-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke-width="1.5" />
+                                </svg>
+                            </div>
+                            <img src="https://maroju-ramesh.github.io/Spotify-Clone/songs/${folderName}/cover.jpg" alt="">
+                            <h2>${info.title}</h2>
+                            <p>${info.description}</p>
+                        </div>`;
+                } catch (err) {
+                    console.error(`Failed to fetch info for folder ${folderName}:`, err);
+                }
+            }
+        });
+    } catch (error) {
+        console.error("Failed to fetch albums: ", error);
     }
-}
 
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
