@@ -154,7 +154,7 @@ Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEa
 
 /////////////////////////
 async function displayAlbums(){
-    let a = await fetch(`./songs/`)
+    let a = await fetch(`./songs/${folder}/info.json`);
 let response = await a.text();
 // console.log(response);
 let div = document.createElement("div")
