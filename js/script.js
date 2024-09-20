@@ -102,7 +102,7 @@ const updatePlayButtonForCurrentSong = (track) => {
 async function displayAlbums() {
     try {
         // Fetch the songs directory to list all albums
-        const response = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs/`);
+        const response = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs.json`);
         const text = await response.text();
 
         // Create a temporary DOM element to parse the HTML response
