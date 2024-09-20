@@ -208,7 +208,7 @@ async function main(){
 
 //display all albums n the page
 
-displayAlbums(;)
+displayAlbums();
 
 
 
