@@ -155,6 +155,8 @@ Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEa
 /////////////////////////
 async function displayAlbums(){
     let a = await fetch(`https://maroju-ramesh.github.io/Spotify-Clone/songs/`)
+    console.log(`Fetching songs from: ${fetchUrl}`);
+
 let response = await a.text();
 // console.log(response);
 let div = document.createElement("div")
